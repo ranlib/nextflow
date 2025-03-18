@@ -1,4 +1,7 @@
 process stats {
+	publishDir "seqkit"
+    container "dbest/seqkit:v2.82"
+
     input:
     path fastq
     val samplename 
