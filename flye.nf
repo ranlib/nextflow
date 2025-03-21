@@ -1,8 +1,9 @@
-nextflow.enable.dsl=2
-
 process Assemble {
     tag "$prefix"
     
+    publishDir "flye", mode: 'copy'
+    container "dbest/flye:v2.9.5"
+
     input:
     path reads
     val prefix
@@ -20,6 +21,10 @@ process Assemble {
         read_arg = '--nano-corr'
     } else if (read_type == 'nano-hq') {
         read_arg = '--nano-hq'
+    } else if (read_type == 'pacbio-corr') {
+        read_type = '--pacbio-corr'
+    } else {
+        read_type = '--pacbio-corr'
     }
     
     """
@@ -32,18 +37,10 @@ process Assemble {
     """
 }
 
-workflow Flye {
-    params.reads
-    params.prefix
-    params.read_type = 'nano-raw'
+params.read_type = "nano-raw"
     
-    take:
-    file reads from params.reads
-    val prefix from params.prefix
-    val read_type from params.read_type
-    
-    main:
-    Assemble(reads, prefix, read_type)
+workflow {
+    Assemble(file(params.reads), params.prefix, params.read_type)
     
     emit:
     fa = Assemble.out[0]
