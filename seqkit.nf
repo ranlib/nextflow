@@ -1,6 +1,6 @@
 process stats {
-	publishDir "seqkit"
-    container "dbest/seqkit:v2.82"
+    publishDir "seqkit", mode: 'copy'
+    container "dbest/seqkit:v2.8.2"
 
     input:
     path fastq
