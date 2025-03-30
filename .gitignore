@@ -161,8 +161,9 @@ cython_debug/
 
 # nextflow
 .nextflow.log
+.nextflow.log.*
 .nextflow
-nextflow
+nextflow/
 *.fq.gz
 *.fastq.gz
 *~
